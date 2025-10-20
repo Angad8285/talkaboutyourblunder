@@ -1,9 +1,12 @@
+
 'use client'
 
-import { useGameStore } from '@/store/gameStore'
+import { useGameSlice } from '../../store/gameSlice'
 
 export default function AnalysisPanel() {
-  const { blunders } = useGameStore()
+  const { plies } = useGameSlice();
+  // For demo, filter plies with a comment containing 'blunder' as mock blunders
+  const blunders = plies.filter(ply => ply.comment?.toLowerCase().includes('blunder'));
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6">
@@ -19,7 +22,7 @@ export default function AnalysisPanel() {
         </div>
       ) : (
         <div className="space-y-3">
-          {blunders.map((blunder, index) => (
+          {blunders.map((blunder: typeof plies[0], index: number) => (
             <div
               key={index}
               className="p-4 border border-slate-200 dark:border-slate-700 rounded-md 
@@ -29,20 +32,15 @@ export default function AnalysisPanel() {
                 <span className="font-semibold text-slate-900 dark:text-white">
                   Move {blunder.moveNumber}
                 </span>
-                <span className={`
-                  px-2 py-1 text-xs rounded-full font-medium
-                  ${blunder.severity === 'blunder' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : ''}
-                  ${blunder.severity === 'mistake' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' : ''}
-                  ${blunder.severity === 'inaccuracy' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : ''}
-                `}>
-                  {blunder.severity}
+                <span className="px-2 py-1 text-xs rounded-full font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">
+                  blunder
                 </span>
               </div>
               <div className="text-sm text-slate-600 dark:text-slate-400">
-                {blunder.description}
+                {blunder.comment || 'No description'}
               </div>
               <div className="mt-2 text-xs text-slate-500 dark:text-slate-500">
-                Eval: {blunder.evalBefore} → {blunder.evalAfter}
+                SAN: {blunder.san}
               </div>
             </div>
           ))}

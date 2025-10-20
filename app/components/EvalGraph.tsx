@@ -1,17 +1,17 @@
 'use client'
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts'
-import { useGameStore } from '@/store/gameStore'
+import { useGameSlice } from '../../store/gameSlice'
 
 export default function EvalGraph() {
-  const { evaluations } = useGameStore()
+  const { plies } = useGameSlice()
 
-  // Sample data for visualization (will be replaced with real eval data)
-  const sampleData = evaluations.length > 0 ? evaluations : [
-    { move: 0, eval: 0.2 },
-    { move: 1, eval: 0.1 },
-    { move: 2, eval: 0.3 },
-  ]
+  // Build graph data from plies (if you have engine evals, add them here)
+  const data = plies.map((ply, idx) => ({
+    move: idx + 1,
+    eval: typeof ply.eval === 'number' ? ply.eval : null,
+    san: ply.san,
+  })).filter(d => d.eval !== null)
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6">
@@ -19,14 +19,14 @@ export default function EvalGraph() {
         Evaluation Graph
       </h2>
 
-      {evaluations.length === 0 ? (
+      {data.length === 0 ? (
         <div className="text-center text-slate-500 dark:text-slate-400 py-12">
           Run analysis to see position evaluations
         </div>
       ) : (
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={sampleData}>
+            <LineChart data={data}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis 
                 dataKey="move" 
