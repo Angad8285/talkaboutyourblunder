@@ -1,0 +1,17 @@
+[Event "Casual Game"]
+[Site "Chess.com"]
+[Date "2024.01.15"]
+[Round "?"]
+[White "Player1"]
+[Black "Player2"]
+[Result "1-0"]
+[WhiteElo "1500"]
+[BlackElo "1450"]
+[TimeControl "600+0"]
+[ECO "C50"]
+[Opening "Italian Game"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. O-O Nf6 5. d3 d6 6. c3 O-O 7. Bb3 a6 
+8. Nbd2 Ba7 9. h3 h6 10. Re1 Re8 11. Nf1 Be6 12. Bc2 Qd7 13. Ng3 Rad8 
+14. Nh4 Kh7 15. Nhf5 Bxf5 16. Nxf5 g6 17. Ne3 Kg7 18. Qf3 Nh7 19. Nd5 Ng5 
+20. Qg3 f6 21. h4 Nf7 22. Bh6+ Nxh6 23. Qxh6+ Kf7 24. Qxh8 1-0
