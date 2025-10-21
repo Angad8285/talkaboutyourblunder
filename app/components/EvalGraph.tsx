@@ -2,16 +2,35 @@
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts'
 import { useGameSlice } from '../../store/gameSlice'
+import { useAnalysisSlice } from '../../store/analysisSlice'
 
 export default function EvalGraph() {
   const { plies } = useGameSlice()
+  const { evaluations } = useAnalysisSlice()
 
-  // Build graph data from plies (if you have engine evals, add them here)
-  const data = plies.map((ply, idx) => ({
-    move: idx + 1,
-    eval: typeof ply.eval === 'number' ? ply.eval : null,
-    san: ply.san,
-  })).filter(d => d.eval !== null)
+  // Build graph data from plies and evaluations
+  const data = plies.map((ply, idx) => {
+    const evalData = evaluations.get(idx)
+    let evalScore = null
+    
+    if (evalData) {
+      // Use evalAfter for the graph (evaluation after the move)
+      const snapshot = evalData.after
+      if (snapshot.isMate) {
+        // Convert mate score to a large value
+        evalScore = snapshot.score > 0 ? 1000 : -1000
+      } else {
+        // Convert centipawns to pawns and clamp to reasonable range
+        evalScore = Math.max(-10, Math.min(10, snapshot.score / 100))
+      }
+    }
+    
+    return {
+      move: idx + 1,
+      eval: evalScore,
+      san: ply.san,
+    }
+  }).filter(d => d.eval !== null)
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6">
